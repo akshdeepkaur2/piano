@@ -1,0 +1,104 @@
+// This #include statement was automatically added by the Particle IDE.
+#include <InternetButton.h>
+
+// This #include statement was automatically added by the Particle IDE.
+
+#include "InternetButton.h"
+#include "math.h"
+
+
+InternetButton b = InternetButton();
+
+
+// Global variables to store how many lights should be turned on
+int nodePressed = 1;
+bool numLightsChanged = false;
+
+
+void setup() {
+
+    // 1. Setup the Internet Button
+    b.begin();
+
+    // 2. Setup the API endpoint -- 
+    // When person visits http://particle.io/..../lights, run the controlNumLights() function
+    Particle.function("sounds", nodesPressed);
+ 
+    // 3. Setup the initial state of the LEDS
+    // (by default, turn on 6 lights)
+   //activateMusic();
+   
+  
+}
+
+
+
+
+void loop(){
+    
+    // This loop just sits here and waits for the numLightsChanged variable to change to true
+    // Once it changes to true, run the activateLEDS() function.
+    if(numLightsChanged == true){
+        delay(10);
+        activateMusic();
+       
+        numLightsChanged = false;
+    }
+}
+
+// Turn on your LEDS
+void activateMusic(){
+
+    // 1. turn off all lights
+    b.allLedsOff();
+    
+   if(nodePressed == 1){
+        // playNote just plays a single note, and takes
+        // a note name as a string and a note type as an int
+        // Note types define duration like in scored music, so 
+        // 8 is a 1/8th note and 4 is a 1/4 note
+        b.playNote("G3",8);
+    }
+    
+    if(nodePressed == 2){ 
+        b.playSong("G3,8,G4,8");
+    }
+    
+    if(nodePressed == 3){
+        b.playNote("G4",8);
+    }
+    
+    if(nodePressed == 4){
+        b.playSong("G4,8,G5,8");
+    }
+    
+    if(nodePressed == 5){
+        b.playNote("G5",8);
+    }
+    
+    if(nodePressed == 6){
+        b.playSong("G5,8,G6,8");
+    }
+    
+    if(nodePressed == 7){
+        b.playNote("G6",8);
+    }
+    
+         
+    }
+    
+
+int nodesPressed(String command){
+    //parse the string into an integer
+    int Nodenumber = atoi(command.c_str());
+
+    
+    // If no errors, then set the global variable to numLights
+    nodePressed = Nodenumber;
+
+    numLightsChanged = true;
+
+    // In embedded programming, "return 1" means that 
+    // the function finished successfully
+    return 1;
+}
